@@ -16,4 +16,5 @@ public class Resultado {
 
     @ColumnInfo(name = "valor_resposta")
     public String valorResposta;
+
 }
