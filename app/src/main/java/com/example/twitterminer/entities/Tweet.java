@@ -1,4 +1,4 @@
-package entities;
+package com.example.twitterminer.entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
