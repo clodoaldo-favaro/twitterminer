@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Usuario {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
 
     @ColumnInfo(name = "nome")
@@ -14,6 +14,9 @@ public class Usuario {
 
     @ColumnInfo(name = "login")
     public String login;
+
+    @ColumnInfo(name = "email")
+    public String email;
 
     @ColumnInfo(name = "senha")
     public String senha;
