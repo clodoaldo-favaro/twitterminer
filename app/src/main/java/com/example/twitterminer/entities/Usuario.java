@@ -33,6 +33,8 @@ public class Usuario {
     @ColumnInfo(name = "access_token_secret")
     public String accessTokenSecret;
 
+    public Usuario() {};
+
     public Usuario(String nome) {
         this.nome = nome;
     }
