@@ -1,5 +1,6 @@
 package com.example.twitterminer.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -12,7 +13,7 @@ import java.util.List;
 @Dao
 public interface TweetDao {
     @Query("SELECT * FROM tweet")
-    List<Tweet> getAll();
+    LiveData<List<Tweet>> getAll();
 
     @Query("SELECT * FROM tweet WHERE id = :id")
     Tweet findById(int id);

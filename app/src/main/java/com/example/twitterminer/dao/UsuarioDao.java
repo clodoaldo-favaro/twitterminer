@@ -3,6 +3,7 @@ package com.example.twitterminer.dao;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.twitterminer.entities.Usuario;
@@ -26,9 +27,12 @@ public interface UsuarioDao {
     @Query("SELECT * FROM usuario WHERE email = :first LIMIT 1")
     Usuario findByEmail(String first);
 
-    @Insert
-    void insertAll(Usuario... users);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insert(Usuario user);
 
     @Delete
     void delete(Usuario user);
+
+    @Query("DELETE FROM usuario")
+    void deleteAll();
 }

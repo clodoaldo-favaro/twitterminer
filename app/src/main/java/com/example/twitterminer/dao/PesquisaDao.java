@@ -1,5 +1,6 @@
 package com.example.twitterminer.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -12,7 +13,7 @@ import java.util.List;
 @Dao
 public interface PesquisaDao {
     @Query("SELECT * FROM pesquisa")
-    List<Pesquisa> getAll();
+    LiveData<List<Pesquisa>> getAll();
 
     @Query("SELECT * FROM pesquisa WHERE id = :id")
     Pesquisa findById(int id);
@@ -27,7 +28,7 @@ public interface PesquisaDao {
     Pesquisa findByDescricao(String descricao);
 
     @Insert
-    void insertAll(Pesquisa... pesquisa);
+    void insert(Pesquisa pesquisa);
 
     @Delete
     void delete(Pesquisa pesquisa);

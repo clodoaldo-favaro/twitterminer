@@ -1,7 +1,12 @@
 package com.example.twitterminer.database;
 
+import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.room.Database;
+import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.twitterminer.dao.PesquisaDao;
 import com.example.twitterminer.dao.ResultadoDao;
@@ -12,10 +17,50 @@ import com.example.twitterminer.entities.Resultado;
 import com.example.twitterminer.entities.Tweet;
 import com.example.twitterminer.entities.Usuario;
 
-@Database(entities = {Usuario.class, Resultado.class, Tweet.class, Pesquisa.class}, version = 1)
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+@Database(entities = {Usuario.class, Resultado.class, Tweet.class, Pesquisa.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UsuarioDao usuarioDao();
     public abstract PesquisaDao pesquisaDao();
     public abstract TweetDao tweetDao();
     public abstract ResultadoDao resultadoDao();
+
+    private static volatile AppDatabase INSTANCE;
+    private static final int NUMBER_OF_THREADS = 4;
+    public static final ExecutorService databaseWriteExecutor =
+            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+
+    public static AppDatabase getDatabase(final Context context) {
+        if (INSTANCE == null) {
+            synchronized (AppDatabase.class){
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                            AppDatabase.class, "app_database")
+                            .addCallback(sRoomDatabaseCallback)
+                            .build();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
+    public static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+
+            databaseWriteExecutor.execute(() -> {
+                UsuarioDao usuarioDao = INSTANCE.usuarioDao();
+                usuarioDao.deleteAll();
+
+                Usuario usuario = Usuario.getDefaultUser();
+                usuarioDao.insert(usuario);
+            });
+        }
+    };
+
+
 }
