@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TwitterMiner">
         <activity
+            android:name=".NovaPesquisaActivity"
+            android:exported="true" />
+        <activity
             android:name=".TelaInicialActivity"
             android:exported="true" />
         <activity
