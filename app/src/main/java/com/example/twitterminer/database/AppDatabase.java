@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.twitterminer.dao.PesquisaDao;
@@ -22,6 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Usuario.class, Resultado.class, Tweet.class, Pesquisa.class}, version = 1, exportSchema = false)
+@TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UsuarioDao usuarioDao();
     public abstract PesquisaDao pesquisaDao();
@@ -54,10 +56,12 @@ public abstract class AppDatabase extends RoomDatabase {
 
             databaseWriteExecutor.execute(() -> {
                 UsuarioDao usuarioDao = INSTANCE.usuarioDao();
-                usuarioDao.deleteAll();
 
-                Usuario usuario = Usuario.getDefaultUser();
-                usuarioDao.insert(usuario);
+                Usuario usuario = usuarioDao.findByLogin("teste");
+                if (usuario == null) {
+                    usuario = Usuario.getDefaultUser();
+                    usuarioDao.insert(usuario);
+                }
             });
         }
     };

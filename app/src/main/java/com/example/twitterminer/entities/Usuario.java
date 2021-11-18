@@ -33,9 +33,11 @@ public class Usuario {
     @ColumnInfo(name = "access_token_secret")
     public String accessTokenSecret;
 
-    private Usuario(String nome) {
+    public Usuario(String nome) {
         this.nome = nome;
     }
+
+
 
     public static Usuario getDefaultUser() {
         Usuario usuario = new Usuario("Default");

@@ -18,9 +18,6 @@ public interface ResultadoDao {
     @Query("SELECT * FROM resultado WHERE id = :id")
     Resultado findById(int id);
 
-    @Query("SELECT * FROM resultado WHERE id IN (:resultadoIds)")
-    List<Pesquisa> loadAllByIds(int[] resultadoIds);
-
     @Query("SELECT * FROM resultado WHERE id_pesquisa = :idPesquisa LIMIT 1")
     Resultado findByIdPesquisa(int idPesquisa);
 

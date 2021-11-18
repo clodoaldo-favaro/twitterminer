@@ -12,27 +12,9 @@ import java.util.List;
 
 @Dao
 public interface UsuarioDao {
-    @Query("SELECT * FROM usuario")
-    List<Usuario> getAll();
-
-    @Query("SELECT * FROM usuario WHERE id IN (:userIds)")
-    List<Usuario> loadAllByIds(int[] userIds);
-
-    @Query("SELECT * FROM usuario WHERE nome LIKE :first LIMIT 1")
-    Usuario findByName(String first);
-
     @Query("SELECT * FROM usuario WHERE login = :first LIMIT 1")
     Usuario findByLogin(String first);
 
-    @Query("SELECT * FROM usuario WHERE email = :first LIMIT 1")
-    Usuario findByEmail(String first);
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Usuario user);
-
-    @Delete
-    void delete(Usuario user);
-
-    @Query("DELETE FROM usuario")
-    void deleteAll();
 }

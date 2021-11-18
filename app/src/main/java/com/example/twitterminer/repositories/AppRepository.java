@@ -24,16 +24,12 @@ public class AppRepository {
 
     public AppRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
-        mUsuarioDao = db.usuarioDao();
         mTweetDao = db.tweetDao();
         mPesquisaDao = db.pesquisaDao();
         mResultadoDao = db.resultadoDao();
         mPesquisas = mPesquisaDao.getAll();
     }
 
-    public void insertUser(Usuario usuario) {
-        AppDatabase.databaseWriteExecutor.execute(() -> mUsuarioDao.insert(usuario));
-    }
 
     public void insertPesquisa(Pesquisa pesquisa) {
         AppDatabase.databaseWriteExecutor.execute(() -> mPesquisaDao.insert(pesquisa));

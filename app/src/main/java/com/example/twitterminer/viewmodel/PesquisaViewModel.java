@@ -20,7 +20,7 @@ public class PesquisaViewModel extends AndroidViewModel {
         mPesquisas = mRepository.mPesquisas;
     }
 
-    LiveData<List<Pesquisa>>  getPesquisas() {
+    LiveData<List<Pesquisa>> getPesquisas() {
         return mPesquisas;
     }
 
