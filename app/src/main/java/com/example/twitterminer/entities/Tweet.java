@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 public class Tweet {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
 
     @ColumnInfo(name = "id_usuario")

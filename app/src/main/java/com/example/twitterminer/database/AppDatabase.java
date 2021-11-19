@@ -22,7 +22,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Usuario.class, Resultado.class, Tweet.class, Pesquisa.class}, version = 1, exportSchema = false)
+@Database(entities = {Usuario.class, Resultado.class, Tweet.class, Pesquisa.class}, version = 2, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UsuarioDao usuarioDao();

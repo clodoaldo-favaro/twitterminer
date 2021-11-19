@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 public class Pesquisa {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
 
     @ColumnInfo(name = "id_usuario")
@@ -31,4 +31,20 @@ public class Pesquisa {
 
     @ColumnInfo(name = "data_ultima_consulta")
     public Date dataUltimaConsulta;
+
+    public Pesquisa() {};
+
+    @Override
+    public String toString() {
+        return "Pesquisa{" +
+                "id=" + id +
+                ", idUsuario=" + idUsuario +
+                ", titulo='" + titulo + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", palavrasChave='" + palavrasChave + '\'' +
+                ", respostasPossiveis='" + respostasPossiveis + '\'' +
+                ", dataInicio=" + dataInicio +
+                ", dataUltimaConsulta=" + dataUltimaConsulta +
+                '}';
+    }
 }
