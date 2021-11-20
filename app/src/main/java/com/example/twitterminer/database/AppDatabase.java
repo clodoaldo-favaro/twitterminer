@@ -51,8 +51,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            super.onOpen(db);
 
             databaseWriteExecutor.execute(() -> {
                 UsuarioDao usuarioDao = INSTANCE.usuarioDao();

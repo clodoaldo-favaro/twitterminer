@@ -13,19 +13,19 @@ import java.util.List;
 @Dao
 public interface TweetDao {
     @Query("SELECT * FROM tweet")
-    LiveData<List<Tweet>> getAll();
+    List<Tweet> getAll();
+
+    @Query("SELECT * FROM tweet")
+    LiveData<List<Tweet>> getAllLiveData();
 
     @Query("SELECT * FROM tweet WHERE id = :id")
     Tweet findById(int id);
-
-    @Query("SELECT * FROM tweet WHERE id IN (:tweetIds)")
-    List<Tweet> loadAllByIds(int[] tweetIds);
 
     @Query("SELECT * FROM tweet WHERE mensagem LIKE :mensagem LIMIT 1")
     Tweet findByMensagem(String mensagem);
 
     @Insert
-    void insertAll(Tweet... tweet);
+    void insert(Tweet tweet);
 
     @Delete
     void delete(Tweet tweet);

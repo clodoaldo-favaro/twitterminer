@@ -24,7 +24,7 @@ public class PesquisaViewModel extends AndroidViewModel {
         return mPesquisas;
     }
 
-    public void insertPesquisa(Pesquisa pesquisa) {
+    public void insert(Pesquisa pesquisa) {
         mRepository.insertPesquisa(pesquisa);
     }
 
