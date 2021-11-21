@@ -25,7 +25,8 @@ public class TelaInicialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
 
-        mPesquisaViewModel = new ViewModelProvider(this).get(PesquisaViewModel.class);
+        //mPesquisaViewModel = new ViewModelProvider(this).get(PesquisaViewModel.class);
+        mPesquisaViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(PesquisaViewModel.class);
 
         pesquisasButton = findViewById(R.id.buttonPesquisas);
 
@@ -50,6 +51,11 @@ public class TelaInicialActivity extends AppCompatActivity {
             pesquisa.respostasPossiveis = data.getStringExtra(NovaPesquisaActivity.EXTRA_RESPOSTAS);
 
             mPesquisaViewModel.insert(pesquisa);
+
+            Toast.makeText(
+                    getApplicationContext(),
+                    "Pesquisa salva com sucesso!",
+                    Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(
                     getApplicationContext(),
