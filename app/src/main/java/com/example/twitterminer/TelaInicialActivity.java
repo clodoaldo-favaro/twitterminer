@@ -25,21 +25,22 @@ public class TelaInicialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
 
-        mPesquisaViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(PesquisaViewModel.class);
+        //mPesquisaViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(PesquisaViewModel.class);
 
         pesquisasButton = findViewById(R.id.buttonPesquisas);
 
         pesquisasButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TelaInicialActivity.this, NovaPesquisaActivity.class);
+                Intent intent = new Intent(TelaInicialActivity.this, ListagemPesquisasActivity.class);
 
-                startActivityForResult(intent, NOVA_PESQUISA_ACTIVITY_REQUEST_CODE);
+                //startActivityForResult(intent, NOVA_PESQUISA_ACTIVITY_REQUEST_CODE);
+                startActivity(intent);
             }
         });
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NOVA_PESQUISA_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
@@ -61,5 +62,5 @@ public class TelaInicialActivity extends AppCompatActivity {
                     "Não foi possível salvar a pesquisa",
                     Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
 }
