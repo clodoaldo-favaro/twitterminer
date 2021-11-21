@@ -25,7 +25,6 @@ public class TelaInicialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
 
-        //mPesquisaViewModel = new ViewModelProvider(this).get(PesquisaViewModel.class);
         mPesquisaViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(PesquisaViewModel.class);
 
         pesquisasButton = findViewById(R.id.buttonPesquisas);
