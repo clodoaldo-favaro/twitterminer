@@ -41,4 +41,12 @@ public class AppRepository {
     public void insertTweet(Tweet tweet) {
         AppDatabase.databaseWriteExecutor.execute(() -> mTweetDao.insert(tweet));
     }
+
+    public List<Pesquisa> getAllPesquisas() {
+        return mPesquisaDao.getAll();
+    }
+
+    public void deletePesquisa(Pesquisa pesquisa) {
+        mPesquisaDao.delete(pesquisa);
+    }
 }
