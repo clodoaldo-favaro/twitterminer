@@ -46,6 +46,10 @@ public class AppRepository {
         return mPesquisaDao.getAll();
     }
 
+    public LiveData<List<Pesquisa>> getAllPesquisasLiveData() {
+        return mPesquisaDao.getAllLiveData();
+    }
+
     public void deletePesquisa(Pesquisa pesquisa) {
         mPesquisaDao.delete(pesquisa);
     }

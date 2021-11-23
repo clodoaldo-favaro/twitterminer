@@ -55,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
                 Context context = getApplicationContext();
 
-
-
                 AppDatabase.databaseWriteExecutor.execute(() -> {
                     Usuario usuario = db.usuarioDao().findByLogin(login);
                     if (usuario != null) {

@@ -14,12 +14,16 @@ import java.util.List;
 public class PesquisaViewModel extends AndroidViewModel {
     private AppRepository mRepository;
     private MutableLiveData<List<Pesquisa>> listOfPesquisas;
+    private final LiveData<List<Pesquisa>> mAllPesquisas;
 
     public PesquisaViewModel (Application application) {
         super(application);
-        listOfPesquisas = new MutableLiveData<>();
         mRepository = new AppRepository(application);
+        mAllPesquisas = mRepository.getAllPesquisasLiveData();
+        listOfPesquisas = new MutableLiveData<>();
     }
+
+    public LiveData<List<Pesquisa>> getAllPesquisasLiveData() { return mAllPesquisas; }
 
     public MutableLiveData<List<Pesquisa>> getListOfPesquisasObserver() {
         getAllPesquisaList();
@@ -37,12 +41,10 @@ public class PesquisaViewModel extends AndroidViewModel {
 
     public void insert(Pesquisa pesquisa) {
         mRepository.insertPesquisa(pesquisa);
-        getAllPesquisaList();
     }
 
     public void delete(Pesquisa pesquisa) {
         mRepository.deletePesquisa(pesquisa);
-        getAllPesquisaList();
     }
 
 

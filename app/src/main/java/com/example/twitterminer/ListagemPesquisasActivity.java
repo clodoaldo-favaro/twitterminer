@@ -1,5 +1,6 @@
 package com.example.twitterminer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -58,13 +60,15 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
             }
         });
 
-        initViewModel();
         initRecyclerView();
+        initViewModel();
     }
 
     private void initViewModel() {
         mPesquisaViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(PesquisaViewModel.class);
-        mPesquisaViewModel.getListOfPesquisasObserver().observe(this, new Observer<List<Pesquisa>>() {
+        //mPesquisaViewModel = new ViewModelProvider(this).get(PesquisaViewModel.class);
+        /*mPesquisaViewModel.getAllPesquisasLiveData().observe(this, new Observer<List<Pesquisa>>() {
+
             @Override
             public void onChanged(List<Pesquisa> pesquisas) {
                 if (pesquisas == null) {
@@ -72,22 +76,27 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
                     recyclerView.setVisibility(View.GONE);
                 } else {
                     //show the recycler
-                    pesquisaListAdapter.setPesquisaList(pesquisas);
+                    pesquisaListAdapter.submitList(pesquisas);
                     recyclerView.setVisibility(View.VISIBLE);
                     noResultsTextView.setVisibility(View.GONE);
                 }
             }
+        });*/
+        mPesquisaViewModel.getAllPesquisasLiveData().observe(this, pesquisas ->  {
+            pesquisaListAdapter.submitList(pesquisas);
         });
     }
 
     private void initRecyclerView() {
-        pesquisaListAdapter = new PesquisaListAdapter(this, this);
+        pesquisaListAdapter = new PesquisaListAdapter(new PesquisaListAdapter.PesquisaDiff());
         recyclerView.setAdapter(pesquisaListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        Context context = getApplicationContext();
 
         if (requestCode == NOVA_PESQUISA_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Pesquisa pesquisa = new Pesquisa();
@@ -97,11 +106,12 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
             pesquisa.respostasPossiveis = data.getStringExtra(NovaPesquisaActivity.EXTRA_RESPOSTAS);
 
             mPesquisaViewModel.insert(pesquisa);
-
-            Toast.makeText(
-                    getApplicationContext(),
-                    "Pesquisa salva com sucesso!",
-                    Toast.LENGTH_LONG).show();
+            //ContextCompat.getMainExecutor(context).execute(()  -> {
+                Toast.makeText(
+                        context,
+                        "Pesquisa salva com sucesso!",
+                        Toast.LENGTH_LONG).show();
+            //});
         } else {
             Toast.makeText(
                     getApplicationContext(),
@@ -118,7 +128,6 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
 
     @Override
     public void removeItem(Pesquisa pesquisa) {
-        Log.d("Pesquisa deletar", pesquisa.toString());
         mPesquisaViewModel.delete(pesquisa);
     }
 }

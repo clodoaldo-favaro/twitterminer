@@ -1,10 +1,13 @@
 package com.example.twitterminer.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
+
+import javax.annotation.Nonnegative;
 
 @Entity
 public class Pesquisa {
@@ -33,6 +36,9 @@ public class Pesquisa {
     public Date dataUltimaConsulta;
 
     public Pesquisa() {};
+
+    @NonNull
+    public String getTitulo() { return this.titulo; }
 
     @Override
     public String toString() {
