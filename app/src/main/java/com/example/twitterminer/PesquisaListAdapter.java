@@ -64,7 +64,6 @@ public class PesquisaListAdapter extends RecyclerView.Adapter<PesquisaListAdapte
         } else {
             return pesquisaList.size();
         }
-
     }
 
     public class PesquisaListViewHolder extends RecyclerView.ViewHolder {

@@ -75,17 +75,15 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
                     pesquisaListAdapter.setPesquisaList(pesquisas);
                     recyclerView.setVisibility(View.VISIBLE);
                     noResultsTextView.setVisibility(View.GONE);
-
                 }
             }
         });
     }
 
     private void initRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         pesquisaListAdapter = new PesquisaListAdapter(this, this);
         recyclerView.setAdapter(pesquisaListAdapter);
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
