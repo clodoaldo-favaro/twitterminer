@@ -51,6 +51,6 @@ public class AppRepository {
     }
 
     public void deletePesquisa(Pesquisa pesquisa) {
-        mPesquisaDao.delete(pesquisa);
+        AppDatabase.databaseWriteExecutor.execute(() -> mPesquisaDao.delete(pesquisa));
     }
 }

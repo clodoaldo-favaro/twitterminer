@@ -66,29 +66,14 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
 
     private void initViewModel() {
         mPesquisaViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(PesquisaViewModel.class);
-        //mPesquisaViewModel = new ViewModelProvider(this).get(PesquisaViewModel.class);
-        /*mPesquisaViewModel.getAllPesquisasLiveData().observe(this, new Observer<List<Pesquisa>>() {
 
-            @Override
-            public void onChanged(List<Pesquisa> pesquisas) {
-                if (pesquisas == null) {
-                    noResultsTextView.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
-                } else {
-                    //show the recycler
-                    pesquisaListAdapter.submitList(pesquisas);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    noResultsTextView.setVisibility(View.GONE);
-                }
-            }
-        });*/
         mPesquisaViewModel.getAllPesquisasLiveData().observe(this, pesquisas ->  {
             pesquisaListAdapter.submitList(pesquisas);
         });
     }
 
     private void initRecyclerView() {
-        pesquisaListAdapter = new PesquisaListAdapter(new PesquisaListAdapter.PesquisaDiff());
+        pesquisaListAdapter = new PesquisaListAdapter(new PesquisaListAdapter.PesquisaDiff(), this);
         recyclerView.setAdapter(pesquisaListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -104,14 +89,13 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
             pesquisa.descricao = data.getStringExtra(NovaPesquisaActivity.EXTRA_DESCRICAO);
             pesquisa.palavrasChave = data.getStringExtra(NovaPesquisaActivity.EXTRA_PALAVRAS_CHAVE);
             pesquisa.respostasPossiveis = data.getStringExtra(NovaPesquisaActivity.EXTRA_RESPOSTAS);
-
             mPesquisaViewModel.insert(pesquisa);
-            //ContextCompat.getMainExecutor(context).execute(()  -> {
-                Toast.makeText(
-                        context,
-                        "Pesquisa salva com sucesso!",
-                        Toast.LENGTH_LONG).show();
-            //});
+
+            Toast.makeText(
+                    context,
+                    "Pesquisa salva com sucesso!",
+                    Toast.LENGTH_LONG).show();
+
         } else {
             Toast.makeText(
                     getApplicationContext(),
@@ -129,5 +113,9 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
     @Override
     public void removeItem(Pesquisa pesquisa) {
         mPesquisaViewModel.delete(pesquisa);
+        Toast.makeText(
+                getApplicationContext(),
+                "Pesquisa excluída!",
+                Toast.LENGTH_LONG).show();
     }
 }

@@ -23,8 +23,9 @@ public class PesquisaListAdapter extends ListAdapter<Pesquisa, PesquisaListViewH
     private List<Pesquisa> pesquisaList;
     private HandlePesquisaClick clickListener;
 
-    public PesquisaListAdapter(@NonNull DiffUtil.ItemCallback<Pesquisa> diffCallback) {
+    public PesquisaListAdapter(@NonNull DiffUtil.ItemCallback<Pesquisa> diffCallback, HandlePesquisaClick handlePesquisaClick) {
         super(diffCallback);
+        this.clickListener = handlePesquisaClick;
     }
 
     @Override
@@ -37,12 +38,17 @@ public class PesquisaListAdapter extends ListAdapter<Pesquisa, PesquisaListViewH
         Pesquisa current = getItem(position);
         holder.setTitle(current.getTitulo());
 
-        holder.getImageViewDeletarPesquisa().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickListener.removeItem(current);
-            }
-        });
+        ImageView imageViewDelete = holder.getImageViewDeletarPesquisa();
+
+        if (imageViewDelete != null) {
+            imageViewDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListener.removeItem(current);
+                }
+            });
+        }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,16 +57,6 @@ public class PesquisaListAdapter extends ListAdapter<Pesquisa, PesquisaListViewH
             }
         });
     }
-
-    /*@Override
-    public int getItemCount() {
-        if (pesquisaList == null || pesquisaList.size() == 0) {
-            return 0;
-        } else {
-            return pesquisaList.size();
-        }
-    }*/
-
 
     public interface HandlePesquisaClick {
         void itemClick(Pesquisa pesquisa);
