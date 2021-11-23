@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,13 +29,14 @@ import com.example.twitterminer.databinding.ActivityListagemPesquisasBinding;
 
 import java.util.List;
 
-public class ListagemPesquisasActivity extends AppCompatActivity {
+public class ListagemPesquisasActivity extends AppCompatActivity implements PesquisaListAdapter.HandlePesquisaClick {
 
     FloatingActionButton novaPesquisaButton;
     public static final int NOVA_PESQUISA_ACTIVITY_REQUEST_CODE = 1;
     private PesquisaViewModel mPesquisaViewModel;
     private TextView noResultsTextView;
     private RecyclerView recyclerView;
+    private PesquisaListAdapter pesquisaListAdapter;
 
 
     @Override
@@ -67,8 +69,11 @@ public class ListagemPesquisasActivity extends AppCompatActivity {
             public void onChanged(List<Pesquisa> pesquisas) {
                 if (pesquisas == null) {
                     noResultsTextView.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
                 } else {
                     //show the recycler
+                    pesquisaListAdapter.setPesquisaList(pesquisas);
+                    recyclerView.setVisibility(View.VISIBLE);
                     noResultsTextView.setVisibility(View.GONE);
 
                 }
@@ -78,7 +83,8 @@ public class ListagemPesquisasActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter();
+        pesquisaListAdapter = new PesquisaListAdapter(this, this);
+        recyclerView.setAdapter(pesquisaListAdapter);
 
     }
 
@@ -107,4 +113,14 @@ public class ListagemPesquisasActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void itemClick(Pesquisa pesquisa) {
+
+    }
+
+    @Override
+    public void removeItem(Pesquisa pesquisa) {
+        Log.d("Pesquisa deletar", pesquisa.toString());
+        mPesquisaViewModel.delete(pesquisa);
+    }
 }
