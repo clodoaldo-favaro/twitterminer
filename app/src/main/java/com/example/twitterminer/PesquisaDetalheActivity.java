@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.twitterminer.entities.Pesquisa;
@@ -18,6 +20,7 @@ public class PesquisaDetalheActivity extends AppCompatActivity {
     private PesquisaViewModel mPesquisaViewModel;
     private TextView textViewTituloPesquisa;
     private TextView textViewDescricaoPesquisa;
+    private  Pesquisa pesquisaTela;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +41,22 @@ public class PesquisaDetalheActivity extends AppCompatActivity {
                     if (pesquisa != null) {
                         textViewTituloPesquisa.setText(pesquisa.getTitulo());
                         textViewDescricaoPesquisa.setText(pesquisa.getDescricao());
+                        pesquisaTela = pesquisa;
                     }
                 }
             });
         }
+
+        Button buttonColetar = findViewById(R.id.buttonColetarTweets);
+        buttonColetar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PesquisaDetalheActivity.this, ColetarTweetsActivity.class);
+                intent.putExtra(ColetarTweetsActivity.EXTRA_ID_PESQUISA, pesquisaTela.id);
+                intent.putExtra(ColetarTweetsActivity.EXTRA_PALAVRAS_CHAVE, pesquisaTela.palavrasChave);
+                intent.putExtra(ColetarTweetsActivity.EXTRA_RESPOSTAS, pesquisaTela.respostasPossiveis);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/activity_coletar_tweets.xml" value="0.2296875" />
         <entry key="app/src/main/res/layout/activity_listagem_pesquisas.xml" value="0.19947916666666668" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.296195652173913" />
         <entry key="app/src/main/res/layout/activity_nova_pesquisa.xml" value="0.18177083333333333" />
