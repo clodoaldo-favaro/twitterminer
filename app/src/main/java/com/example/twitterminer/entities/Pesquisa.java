@@ -40,6 +40,8 @@ public class Pesquisa {
     @NonNull
     public String getTitulo() { return this.titulo; }
 
+    public String getDescricao() { return this.descricao; }
+
     @Override
     public String toString() {
         return "Pesquisa{" +

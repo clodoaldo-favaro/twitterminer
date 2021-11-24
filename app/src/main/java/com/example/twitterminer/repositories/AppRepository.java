@@ -42,12 +42,12 @@ public class AppRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> mTweetDao.insert(tweet));
     }
 
-    public List<Pesquisa> getAllPesquisas() {
-        return mPesquisaDao.getAll();
-    }
-
     public LiveData<List<Pesquisa>> getAllPesquisasLiveData() {
         return mPesquisaDao.getAllLiveData();
+    }
+
+    public LiveData<Pesquisa> getPesquisaLiveData(int id) {
+        return mPesquisaDao.findByIdLiveData(id);
     }
 
     public void deletePesquisa(Pesquisa pesquisa) {

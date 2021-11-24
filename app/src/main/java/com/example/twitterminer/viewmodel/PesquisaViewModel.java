@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.example.twitterminer.entities.Pesquisa;
 import com.example.twitterminer.repositories.AppRepository;
@@ -22,6 +23,7 @@ public class PesquisaViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Pesquisa>> getAllPesquisasLiveData() { return mAllPesquisas; }
+    public LiveData<Pesquisa> getPesquisaLiveDataById(int id) { return mRepository.getPesquisaLiveData(id); }
 
     public void insert(Pesquisa pesquisa) {
         mRepository.insertPesquisa(pesquisa);

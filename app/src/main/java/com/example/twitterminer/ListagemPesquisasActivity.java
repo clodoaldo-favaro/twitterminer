@@ -114,7 +114,9 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
 
     @Override
     public void itemClick(Pesquisa pesquisa) {
-
+        Intent intent = new Intent(ListagemPesquisasActivity.this, PesquisaDetalheActivity.class);
+        intent.putExtra(PesquisaDetalheActivity.EXTRA_ID_PESQUISA, pesquisa.id);
+        startActivity(intent);
     }
 
     @Override

@@ -21,6 +21,9 @@ public interface PesquisaDao {
     @Query("SELECT * FROM pesquisa WHERE id = :id")
     Pesquisa findById(int id);
 
+    @Query("SELECT * FROM pesquisa WHERE id = :id")
+    LiveData<Pesquisa> findByIdLiveData(int id);
+
     @Query("SELECT * FROM pesquisa WHERE titulo LIKE :titulo LIMIT 1")
     Pesquisa findByTitle(String titulo);
 
