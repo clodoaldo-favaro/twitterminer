@@ -68,7 +68,14 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
         mPesquisaViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(PesquisaViewModel.class);
 
         mPesquisaViewModel.getAllPesquisasLiveData().observe(this, pesquisas ->  {
-            pesquisaListAdapter.submitList(pesquisas);
+            if (pesquisas.size() == 0) {
+                noResultsTextView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            } else {
+                pesquisaListAdapter.submitList(pesquisas);
+                recyclerView.setVisibility(View.VISIBLE);
+                noResultsTextView.setVisibility(View.GONE);
+            }
         });
     }
 
