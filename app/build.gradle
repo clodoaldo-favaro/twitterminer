@@ -61,4 +61,7 @@ dependencies {
 
     // optional - Paging 3 Integration
     implementation "androidx.room:room-paging:2.4.0-beta01"
+
+    //Twitter4J
+    implementation 'org.twitter4j:twitter4j-core:4.0.7'
 }
