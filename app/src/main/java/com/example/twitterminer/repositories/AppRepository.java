@@ -10,6 +10,7 @@ import com.example.twitterminer.dao.TweetDao;
 import com.example.twitterminer.dao.UsuarioDao;
 import com.example.twitterminer.database.AppDatabase;
 import com.example.twitterminer.entities.Pesquisa;
+import com.example.twitterminer.entities.Resultado;
 import com.example.twitterminer.entities.Tweet;
 import com.example.twitterminer.entities.Usuario;
 
@@ -36,6 +37,10 @@ public class AppRepository {
 
     public void insertPesquisa(Pesquisa pesquisa) {
         AppDatabase.databaseWriteExecutor.execute(() -> mPesquisaDao.insert(pesquisa));
+    }
+
+    public void insertResultado(Resultado resultado) {
+        AppDatabase.databaseWriteExecutor.execute(() -> mResultadoDao.insert(resultado));
     }
 
     public void insertTweet(Tweet tweet) {

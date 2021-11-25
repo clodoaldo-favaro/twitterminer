@@ -41,7 +41,8 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "app_database")
-                            .addCallback(sRoomDatabaseCallback)
+                            .addCallback(sCreateRoomDatabaseCallback)
+                            .addCallback(sOpenRoomDatabaseCallback)
                             .build();
                 }
             }
@@ -49,7 +50,7 @@ public abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
+    public static RoomDatabase.Callback sCreateRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
@@ -62,6 +63,19 @@ public abstract class AppDatabase extends RoomDatabase {
                     usuario = Usuario.getDefaultUser();
                     usuarioDao.insert(usuario);
                 }
+            });
+        }
+    };
+
+    public static RoomDatabase.Callback sOpenRoomDatabaseCallback = new RoomDatabase.Callback() {
+        @Override
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            super.onOpen(db);
+
+            databaseWriteExecutor.execute(() -> {
+                ResultadoDao resultadoDao = INSTANCE.resultadoDao();
+                resultadoDao.deleteAll();
+
             });
         }
     };

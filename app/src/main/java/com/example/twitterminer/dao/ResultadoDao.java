@@ -7,6 +7,7 @@ import androidx.room.Query;
 
 import com.example.twitterminer.entities.Pesquisa;
 import com.example.twitterminer.entities.Resultado;
+import com.example.twitterminer.pojo.ResultadoPojo;
 
 import java.util.List;
 
@@ -21,9 +22,15 @@ public interface ResultadoDao {
     @Query("SELECT * FROM resultado WHERE id_pesquisa = :idPesquisa LIMIT 1")
     Resultado findByIdPesquisa(int idPesquisa);
 
+    @Query("SELECT valor_resposta, count(*) as contagem FROM resultado WHERE id_pesquisa = :idPesquisa GROUP BY valor_resposta ORDER BY contagem desc")
+    List<ResultadoPojo> getSomatorioResultadosByIdPesquisa(int idPesquisa);
+
     @Insert
-    void insertAll(Resultado... resultado);
+    void insert(Resultado resultado);
 
     @Delete
     void delete(Resultado resultado);
+
+    @Query("DELETE FROM resultado")
+    void deleteAll();
 }
