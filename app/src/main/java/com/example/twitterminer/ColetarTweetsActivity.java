@@ -36,6 +36,7 @@ public class ColetarTweetsActivity extends AppCompatActivity {
     private boolean interruptSearch;
     private Thread thread;
     private int contadorTweets;
+    private int idPesquisa;
     private TextView textViewContadorTweets;
 
 
@@ -45,10 +46,11 @@ public class ColetarTweetsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_coletar_tweets);
 
         mRepository = new AppRepository(this.getApplication());
+        Button buttonParar = findViewById(R.id.buttonPararColeta);
 
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_ID_PESQUISA)) {
-            int idPesquisa = intent.getIntExtra(EXTRA_ID_PESQUISA, 0);
+            idPesquisa = intent.getIntExtra(EXTRA_ID_PESQUISA, 0);
 
             ConfigurationBuilder cb = new ConfigurationBuilder();
             cb.setDebugEnabled(true)
@@ -85,8 +87,6 @@ public class ColetarTweetsActivity extends AppCompatActivity {
             }
             queryString += ") +exclude:retweets";
 
-            Resultado resultado = new Resultado();
-            resultado.idPesquisa = idPesquisa;
             interruptSearch = false;
 
             Query query = new Query(queryString);
@@ -106,26 +106,40 @@ public class ColetarTweetsActivity extends AppCompatActivity {
                             for (Status tweet : result.getTweets()) {
                                 String textoTweet = tweet.getText().toLowerCase();
                                 contadorTweets++;
-                                textViewContadorTweets.setText(Integer.toString(contadorTweets));
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textViewContadorTweets.setText(Integer.toString(contadorTweets));
+                                    }
+                                });
+
                                 for (int j = 0; j < arrayRespostas.length; j++) {
                                     if (textoTweet.contains(arrayRespostas[j])) {
+                                        Resultado resultado = new Resultado();
+                                        resultado.idPesquisa = idPesquisa;
                                         resultado.valorResposta = arrayRespostas[j];
-                                        Log.d("TEXTO_TWEET_RESPOSTA", textoTweet);
+                                        //Log.d("TEXTO_TWEET_RESPOSTA", textoTweet);
                                         mRepository.insertResultado(resultado);
                                     }
                                 }
                             }
                         } catch (TwitterException te) {
                             te.printStackTrace();
-                            Log.d("TWITTER_EXCEPTION", te.getMessage());
+                            //Log.d("TWITTER_EXCEPTION", te.getMessage());
                         }
                     }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            textViewContadorTweets.setText("Não há mais tweets a serem lidos");
+                            buttonParar.setText("VOLTAR");
+                        }
+                    });
                 }
             });
             thread.start();
         }
 
-        Button buttonParar = findViewById(R.id.buttonPararColeta);
 
         buttonParar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +149,7 @@ public class ColetarTweetsActivity extends AppCompatActivity {
                     thread.interrupt();
                 }
                 Intent intent = new Intent(ColetarTweetsActivity.this, PesquisaDetalheActivity.class);
-                intent.putExtra(PesquisaDetalheActivity.EXTRA_ID_PESQUISA, EXTRA_ID_PESQUISA);
+                intent.putExtra(PesquisaDetalheActivity.EXTRA_ID_PESQUISA, idPesquisa);
                 startActivity(intent);
             }
         });

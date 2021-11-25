@@ -22,10 +22,10 @@ public interface ResultadoDao {
     @Query("SELECT * FROM resultado WHERE id_pesquisa = :idPesquisa LIMIT 1")
     Resultado findByIdPesquisa(int idPesquisa);
 
-    @Query("SELECT valor_resposta, count(*) as contagem FROM resultado WHERE id_pesquisa = :idPesquisa GROUP BY valor_resposta ORDER BY contagem desc")
+    @Query("SELECT valor_resposta as valorResposta, count(*) as contagem FROM resultado WHERE id_pesquisa = :idPesquisa GROUP BY valor_resposta ORDER BY contagem desc")
     List<ResultadoPojo> getSomatorioResultadosByIdPesquisa(int idPesquisa);
 
-    @Query("SELECT count(*) as contagem FROM resultado WHERE id_pesquisa = :idPesquisa GROUP BY valor_resposta ORDER BY contagem desc")
+    @Query("SELECT count(*) as contagem FROM resultado WHERE id_pesquisa = :idPesquisa")
     ResultadoPojo getTotalResultadosByIdPesquisa(int idPesquisa);
 
     @Insert

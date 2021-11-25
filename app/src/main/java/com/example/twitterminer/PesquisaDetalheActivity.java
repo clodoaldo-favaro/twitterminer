@@ -25,6 +25,7 @@ public class PesquisaDetalheActivity extends AppCompatActivity {
     private PesquisaViewModel mPesquisaViewModel;
     private TextView textViewTituloPesquisa;
     private TextView textViewDescricaoPesquisa;
+    private TextView textViewResultado;
     private  Pesquisa pesquisaTela;
     private AppRepository mRepository;
 
@@ -37,6 +38,7 @@ public class PesquisaDetalheActivity extends AppCompatActivity {
         textViewTituloPesquisa = findViewById(R.id.textViewPesquisaDetalheTitulo);
         textViewDescricaoPesquisa = findViewById(R.id.textViewPesquisaDetalheDescricao);
         mRepository = new AppRepository(this.getApplication());
+        textViewResultado = findViewById(R.id.textViewResultados);
 
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_ID_PESQUISA)) {
@@ -57,8 +59,21 @@ public class PesquisaDetalheActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     ResultadoPojo totalResultado = mRepository.getTotalResultadosByIdPesquisa(id);
-                    List<ResultadoPojo> somatorioResultados = mRepository.getSomatorioResultadosByIdPesquisa(id);
-                    Log.d("TESTE", "1");
+                    if (totalResultado != null && totalResultado.contagem > 0) {
+                        List<ResultadoPojo> somatorioResultados = mRepository.getSomatorioResultadosByIdPesquisa(id);
+                        Log.d("TESTE", "1");
+                        String textResultado = "Tweets analisados: " + Integer.toString(totalResultado.contagem) + "\n";
+                        for (int i = 0; i < somatorioResultados.size(); i++) {
+                            textResultado += somatorioResultados.get(i).valorResposta + ": " + somatorioResultados.get(i).contagem + "\n";
+                        }
+                        String finalTextResultado = textResultado;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textViewResultado.setText(finalTextResultado);
+                            }
+                        });
+                    }
                 }
             });
             thread.start();
