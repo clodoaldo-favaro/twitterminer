@@ -67,4 +67,8 @@ public class AppRepository {
     public void deletePesquisa(Pesquisa pesquisa) {
         AppDatabase.databaseWriteExecutor.execute(() -> mPesquisaDao.delete(pesquisa));
     }
+
+    public void deleteResultadosByIdPesquisa(int idPesquisa) {
+        AppDatabase.databaseWriteExecutor.execute(() -> mResultadoDao.deleteByIdPesquisa(idPesquisa));
+    }
 }

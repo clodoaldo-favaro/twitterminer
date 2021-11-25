@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.twitterminer.entities.Pesquisa;
+import com.example.twitterminer.repositories.AppRepository;
 import com.example.twitterminer.viewmodel.PesquisaViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,6 +40,7 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
     private TextView noResultsTextView;
     private RecyclerView recyclerView;
     private PesquisaListAdapter pesquisaListAdapter;
+    private AppRepository mRepository;
 
 
     @Override
@@ -50,6 +52,7 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
         recyclerView = findViewById(R.id.recyclerViewPesquisas);
 
         novaPesquisaButton = findViewById(R.id.adicionarPesquisaFab);
+        mRepository = new AppRepository(this.getApplication());
 
         novaPesquisaButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +124,7 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
 
     @Override
     public void removeItem(Pesquisa pesquisa) {
+        mRepository.deleteResultadosByIdPesquisa(pesquisa.id);
         mPesquisaViewModel.delete(pesquisa);
         Toast.makeText(
                 getApplicationContext(),

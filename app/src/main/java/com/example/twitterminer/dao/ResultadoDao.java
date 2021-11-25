@@ -36,4 +36,7 @@ public interface ResultadoDao {
 
     @Query("DELETE FROM resultado")
     void deleteAll();
+
+    @Query("DELETE FROM resultado WHERE id_pesquisa = :idPesquisa")
+    void deleteByIdPesquisa(int idPesquisa);
 }
