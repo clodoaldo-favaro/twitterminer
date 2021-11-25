@@ -44,7 +44,7 @@ public class ColetarTweetsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coletar_tweets);
 
-        mRepository = new AppRepository(getApplication());
+        mRepository = new AppRepository(this.getApplication());
 
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_ID_PESQUISA)) {
@@ -67,7 +67,7 @@ public class ColetarTweetsActivity extends AppCompatActivity {
             String[] arrayPalavras = palavrasChave.split(",");
             String queryString = "(";
             for (int i = 0; i < arrayPalavras.length; i++) {
-                queryString += arrayPalavras[i].trim();
+                queryString += arrayPalavras[i].trim().toLowerCase();
                 if (i < arrayPalavras.length - 1) {
                     queryString += " AND ";
                 }
@@ -77,7 +77,7 @@ public class ColetarTweetsActivity extends AppCompatActivity {
             String respostas = intent.getStringExtra(EXTRA_RESPOSTAS);
             String[] arrayRespostas = respostas.split(",");
             for (int i = 0; i < arrayRespostas.length; i++) {
-                arrayRespostas[i] = arrayRespostas[i].trim();
+                arrayRespostas[i] = arrayRespostas[i].trim().toLowerCase();
                 queryString += arrayRespostas[i];
                 if (i < arrayRespostas.length - 1) {
                     queryString += " OR ";
@@ -92,18 +92,21 @@ public class ColetarTweetsActivity extends AppCompatActivity {
             Query query = new Query(queryString);
             query.setCount(TWEETS_IN_PAGE);
 
-            Thread thread = new Thread(new Runnable(){
+            thread = new Thread(new Runnable(){
                 @Override
                 public void run() {
                     //500 tweets (100 por página x 5)
                     contadorTweets = 0;
                     for (int i = 0; i <= 5; i++) {
+                        if (interruptSearch) {
+                            break;
+                        }
                         try {
                             QueryResult result = twitter.search(query);
                             for (Status tweet : result.getTweets()) {
-                                String textoTweet = tweet.getText();
+                                String textoTweet = tweet.getText().toLowerCase();
                                 contadorTweets++;
-                                textViewContadorTweets.setText(contadorTweets);
+                                textViewContadorTweets.setText(Integer.toString(contadorTweets));
                                 for (int j = 0; j < arrayRespostas.length; j++) {
                                     if (textoTweet.contains(arrayRespostas[j])) {
                                         resultado.valorResposta = arrayRespostas[j];
@@ -127,6 +130,7 @@ public class ColetarTweetsActivity extends AppCompatActivity {
         buttonParar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                interruptSearch = true;
                 if (thread != null) {
                     thread.interrupt();
                 }

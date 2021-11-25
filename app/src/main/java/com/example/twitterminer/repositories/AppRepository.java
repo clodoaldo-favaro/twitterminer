@@ -13,6 +13,7 @@ import com.example.twitterminer.entities.Pesquisa;
 import com.example.twitterminer.entities.Resultado;
 import com.example.twitterminer.entities.Tweet;
 import com.example.twitterminer.entities.Usuario;
+import com.example.twitterminer.pojo.ResultadoPojo;
 
 import java.util.List;
 
@@ -41,6 +42,14 @@ public class AppRepository {
 
     public void insertResultado(Resultado resultado) {
         AppDatabase.databaseWriteExecutor.execute(() -> mResultadoDao.insert(resultado));
+    }
+
+    public ResultadoPojo getTotalResultadosByIdPesquisa(int idPesquisa) {
+        return mResultadoDao.getTotalResultadosByIdPesquisa(idPesquisa);
+    }
+
+    public List<ResultadoPojo> getSomatorioResultadosByIdPesquisa(int idPesquisa) {
+        return mResultadoDao.getSomatorioResultadosByIdPesquisa(idPesquisa);
     }
 
     public void insertTweet(Tweet tweet) {

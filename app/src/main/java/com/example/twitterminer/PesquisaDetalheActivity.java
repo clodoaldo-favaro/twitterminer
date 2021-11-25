@@ -6,12 +6,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.twitterminer.entities.Pesquisa;
+import com.example.twitterminer.pojo.ResultadoPojo;
+import com.example.twitterminer.repositories.AppRepository;
 import com.example.twitterminer.viewmodel.PesquisaViewModel;
+
+import java.util.List;
 
 public class PesquisaDetalheActivity extends AppCompatActivity {
 
@@ -21,6 +26,7 @@ public class PesquisaDetalheActivity extends AppCompatActivity {
     private TextView textViewTituloPesquisa;
     private TextView textViewDescricaoPesquisa;
     private  Pesquisa pesquisaTela;
+    private AppRepository mRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,7 @@ public class PesquisaDetalheActivity extends AppCompatActivity {
         mPesquisaViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(PesquisaViewModel.class);
         textViewTituloPesquisa = findViewById(R.id.textViewPesquisaDetalheTitulo);
         textViewDescricaoPesquisa = findViewById(R.id.textViewPesquisaDetalheDescricao);
+        mRepository = new AppRepository(this.getApplication());
 
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_ID_PESQUISA)) {
@@ -45,6 +52,16 @@ public class PesquisaDetalheActivity extends AppCompatActivity {
                     }
                 }
             });
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ResultadoPojo totalResultado = mRepository.getTotalResultadosByIdPesquisa(id);
+                    List<ResultadoPojo> somatorioResultados = mRepository.getSomatorioResultadosByIdPesquisa(id);
+                    Log.d("TESTE", "1");
+                }
+            });
+            thread.start();
         }
 
         Button buttonColetar = findViewById(R.id.buttonColetarTweets);
