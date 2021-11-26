@@ -36,18 +36,18 @@ public class ListagemTweetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listagem_pesquisas);
+        setContentView(R.layout.activity_listagem_tweets);
 
-        noResultsTextView = findViewById(R.id.textViewNoPesquisas);
-        recyclerView = findViewById(R.id.recyclerViewPesquisas);
+        noResultsTextView = findViewById(R.id.textViewNoTweets);
+        recyclerView = findViewById(R.id.recyclerViewTweet);
 
-        novoTweetButton = findViewById(R.id.adicionarPesquisaFab);
+        novoTweetButton = findViewById(R.id.adicionarTweetFab);
         mRepository = new AppRepository(this.getApplication());
 
         novoTweetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ListagemTweetActivity.this, NovaPesquisaActivity.class);
+                Intent intent = new Intent(ListagemTweetActivity.this, NovoTweetActivity.class);
 
                 startActivityForResult(intent, NOVO_TWEET_ACTIVITY_REQUEST_CODE);
             }
@@ -85,7 +85,7 @@ public class ListagemTweetActivity extends AppCompatActivity {
 
         if (requestCode == NOVO_TWEET_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Tweet tweet = new Tweet();
-            tweet.mensagem = data.getStringExtra(NovaPesquisaActivity.EXTRA_TITULO);
+            tweet.mensagem = data.getStringExtra(NovoTweetActivity.EXTRA_MENSAGEM);
 
             mTweetViewModel.insert(tweet);
 
