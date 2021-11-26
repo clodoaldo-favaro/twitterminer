@@ -64,6 +64,10 @@ public class AppRepository {
         return mPesquisaDao.getAllLiveData();
     }
 
+    public LiveData<List<Tweet>> getAllTweetsLiveData() {
+        return mTweetDao.getAllLiveData();
+    }
+
     public Pesquisa getPesquisaById(int id) {
         return mPesquisaDao.findById(id);
     }
