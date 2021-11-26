@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.twitterminer.entities.Pesquisa;
 
@@ -30,6 +31,12 @@ public interface PesquisaDao {
     @Insert
     void insert(Pesquisa pesquisa);
 
+    @Update
+    void update(Pesquisa pesquisa);
+
     @Delete
     void delete(Pesquisa pesquisa);
+
+    @Query("UPDATE pesquisa SET id_ultimo_tweet_consultado = 0")
+    void resetIdUltimoTweet();
 }

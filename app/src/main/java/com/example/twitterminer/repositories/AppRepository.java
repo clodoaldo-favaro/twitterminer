@@ -40,6 +40,10 @@ public class AppRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> mPesquisaDao.insert(pesquisa));
     }
 
+    public void updatePesquisa(Pesquisa pesquisa) {
+        AppDatabase.databaseWriteExecutor.execute(() -> mPesquisaDao.update(pesquisa));
+    }
+
     public void insertResultado(Resultado resultado) {
         AppDatabase.databaseWriteExecutor.execute(() -> mResultadoDao.insert(resultado));
     }
@@ -58,6 +62,10 @@ public class AppRepository {
 
     public LiveData<List<Pesquisa>> getAllPesquisasLiveData() {
         return mPesquisaDao.getAllLiveData();
+    }
+
+    public Pesquisa getPesquisaById(int id) {
+        return mPesquisaDao.findById(id);
     }
 
     public LiveData<Pesquisa> getPesquisaLiveData(int id) {

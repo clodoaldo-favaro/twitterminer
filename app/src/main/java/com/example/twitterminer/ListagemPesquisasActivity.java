@@ -30,6 +30,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.twitterminer.databinding.ActivityListagemPesquisasBinding;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ListagemPesquisasActivity extends AppCompatActivity implements PesquisaListAdapter.HandlePesquisaClick {
@@ -99,6 +102,12 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
             pesquisa.descricao = data.getStringExtra(NovaPesquisaActivity.EXTRA_DESCRICAO);
             pesquisa.palavrasChave = data.getStringExtra(NovaPesquisaActivity.EXTRA_PALAVRAS_CHAVE);
             pesquisa.respostasPossiveis = data.getStringExtra(NovaPesquisaActivity.EXTRA_RESPOSTAS);
+
+
+            Date currentDate = Calendar.getInstance().getTime();
+            pesquisa.dataInclusao = currentDate;
+            pesquisa.dataUltimaConsulta = currentDate;
+
             mPesquisaViewModel.insert(pesquisa);
 
             Toast.makeText(

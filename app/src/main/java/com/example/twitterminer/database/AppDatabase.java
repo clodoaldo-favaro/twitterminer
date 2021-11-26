@@ -22,7 +22,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Usuario.class, Resultado.class, Tweet.class, Pesquisa.class}, version = 2, exportSchema = false)
+@Database(entities = {Usuario.class, Resultado.class, Tweet.class, Pesquisa.class}, version = 4, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UsuarioDao usuarioDao();
@@ -73,9 +73,18 @@ public abstract class AppDatabase extends RoomDatabase {
             super.onOpen(db);
 
             databaseWriteExecutor.execute(() -> {
-                ResultadoDao resultadoDao = INSTANCE.resultadoDao();
+                /*ResultadoDao resultadoDao = INSTANCE.resultadoDao();
                 resultadoDao.deleteAll();
+                PesquisaDao pesquisaDao = INSTANCE.pesquisaDao();
+                pesquisaDao.resetIdUltimoTweet();*/
 
+                UsuarioDao usuarioDao = INSTANCE.usuarioDao();
+
+                Usuario usuario = usuarioDao.findByLogin("teste");
+                if (usuario == null) {
+                    usuario = Usuario.getDefaultUser();
+                    usuarioDao.insert(usuario);
+                }
             });
         }
     };

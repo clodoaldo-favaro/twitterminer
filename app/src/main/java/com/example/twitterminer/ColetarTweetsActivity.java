@@ -9,9 +9,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.twitterminer.dao.PesquisaDao;
 import com.example.twitterminer.entities.Pesquisa;
 import com.example.twitterminer.entities.Resultado;
 import com.example.twitterminer.repositories.AppRepository;
+
+import java.util.Calendar;
 
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -27,6 +30,7 @@ public class ColetarTweetsActivity extends AppCompatActivity {
     public static final String EXTRA_ID_PESQUISA = "pesquisa.id";
     public static final String EXTRA_PALAVRAS_CHAVE = "pesquisa.palavras_chave";
     public static final String EXTRA_RESPOSTAS = "pesquisa.respostas";
+    public static final String EXTRA_ID_ULTIMO_TWEET = "pesquisa.idUltimoTweet";
     private final static int TWEETS_IN_PAGE = 100;
 
 
@@ -38,7 +42,7 @@ public class ColetarTweetsActivity extends AppCompatActivity {
     private int contadorTweets;
     private int idPesquisa;
     private TextView textViewContadorTweets;
-
+    private  long idUltimoTweet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,7 @@ public class ColetarTweetsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_ID_PESQUISA)) {
             idPesquisa = intent.getIntExtra(EXTRA_ID_PESQUISA, 0);
+            idUltimoTweet = intent.getLongExtra(EXTRA_ID_ULTIMO_TWEET, 0);
 
             ConfigurationBuilder cb = new ConfigurationBuilder();
             cb.setDebugEnabled(true)
@@ -91,13 +96,18 @@ public class ColetarTweetsActivity extends AppCompatActivity {
 
             Query query = new Query(queryString);
             query.setCount(TWEETS_IN_PAGE);
+            if (idUltimoTweet != 0) {
+                query.setSinceId(idUltimoTweet);
+            }
 
             thread = new Thread(new Runnable(){
                 @Override
                 public void run() {
-                    //500 tweets (100 por página x 5)
+                    pesquisaTela = mRepository.getPesquisaById(idPesquisa);
+
+                    //10000 tweets (100 por página x 5)
                     contadorTweets = 0;
-                    for (int i = 0; i <= 5; i++) {
+                    for (int i = 0; i <= 100; i++) {
                         if (interruptSearch) {
                             break;
                         }
@@ -105,6 +115,9 @@ public class ColetarTweetsActivity extends AppCompatActivity {
                             QueryResult result = twitter.search(query);
                             for (Status tweet : result.getTweets()) {
                                 String textoTweet = tweet.getText().toLowerCase();
+                                if (contadorTweets == 0) {
+                                    idUltimoTweet = tweet.getId();
+                                }
                                 contadorTweets++;
                                 runOnUiThread(new Runnable() {
                                     @Override
@@ -148,6 +161,11 @@ public class ColetarTweetsActivity extends AppCompatActivity {
                 if (thread != null) {
                     thread.interrupt();
                 }
+
+                pesquisaTela.dataUltimaConsulta = Calendar.getInstance().getTime();
+                pesquisaTela.idUltimoTweetConsultado = idUltimoTweet;
+                mRepository.updatePesquisa(pesquisaTela);
+
                 Intent intent = new Intent(ColetarTweetsActivity.this, PesquisaDetalheActivity.class);
                 intent.putExtra(PesquisaDetalheActivity.EXTRA_ID_PESQUISA, idPesquisa);
                 startActivity(intent);

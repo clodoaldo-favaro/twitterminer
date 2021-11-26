@@ -29,11 +29,14 @@ public class Pesquisa {
     @ColumnInfo(name = "respostas_possiveis")
     public String respostasPossiveis;
 
-    @ColumnInfo(name = "data_inicio")
-    public Date dataInicio;
+    @ColumnInfo(name = "data_inclusao")
+    public Date dataInclusao;
 
     @ColumnInfo(name = "data_ultima_consulta")
     public Date dataUltimaConsulta;
+
+    @ColumnInfo(name="id_ultimo_tweet_consultado")
+    public long idUltimoTweetConsultado;
 
     public Pesquisa() {};
 
@@ -51,7 +54,7 @@ public class Pesquisa {
                 ", descricao='" + descricao + '\'' +
                 ", palavrasChave='" + palavrasChave + '\'' +
                 ", respostasPossiveis='" + respostasPossiveis + '\'' +
-                ", dataInicio=" + dataInicio +
+                ", dataInicio=" + dataInclusao +
                 ", dataUltimaConsulta=" + dataUltimaConsulta +
                 '}';
     }

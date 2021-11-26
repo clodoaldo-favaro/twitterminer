@@ -87,6 +87,7 @@ public class PesquisaDetalheActivity extends AppCompatActivity {
                 intent.putExtra(ColetarTweetsActivity.EXTRA_ID_PESQUISA, pesquisaTela.id);
                 intent.putExtra(ColetarTweetsActivity.EXTRA_PALAVRAS_CHAVE, pesquisaTela.palavrasChave);
                 intent.putExtra(ColetarTweetsActivity.EXTRA_RESPOSTAS, pesquisaTela.respostasPossiveis);
+                intent.putExtra(ColetarTweetsActivity.EXTRA_ID_ULTIMO_TWEET, pesquisaTela.idUltimoTweetConsultado);
                 startActivity(intent);
             }
         });
