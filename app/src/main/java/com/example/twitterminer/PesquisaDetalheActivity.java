@@ -16,6 +16,8 @@ import com.example.twitterminer.pojo.ResultadoPojo;
 import com.example.twitterminer.repositories.AppRepository;
 import com.example.twitterminer.viewmodel.PesquisaViewModel;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PesquisaDetalheActivity extends AppCompatActivity {
@@ -26,6 +28,7 @@ public class PesquisaDetalheActivity extends AppCompatActivity {
     private TextView textViewTituloPesquisa;
     private TextView textViewDescricaoPesquisa;
     private TextView textViewResultado;
+    private TextView textViewDataUltimaConsulta;
     private  Pesquisa pesquisaTela;
     private AppRepository mRepository;
 
@@ -37,6 +40,7 @@ public class PesquisaDetalheActivity extends AppCompatActivity {
         mPesquisaViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(PesquisaViewModel.class);
         textViewTituloPesquisa = findViewById(R.id.textViewPesquisaDetalheTitulo);
         textViewDescricaoPesquisa = findViewById(R.id.textViewPesquisaDetalheDescricao);
+        textViewDataUltimaConsulta = findViewById(R.id.textViewDataUltimaPesquisa);
         mRepository = new AppRepository(this.getApplication());
         textViewResultado = findViewById(R.id.textViewResultados);
 
@@ -50,6 +54,10 @@ public class PesquisaDetalheActivity extends AppCompatActivity {
                     if (pesquisa != null) {
                         textViewTituloPesquisa.setText(pesquisa.getTitulo());
                         textViewDescricaoPesquisa.setText(pesquisa.getDescricao());
+                        SimpleDateFormat frmt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        String dataUltimaConsulta = "Última consulta: " + frmt.format(pesquisa.dataUltimaConsulta);
+                        textViewDataUltimaConsulta.setText(dataUltimaConsulta);
+
                         pesquisaTela = pesquisa;
                     }
                 }
