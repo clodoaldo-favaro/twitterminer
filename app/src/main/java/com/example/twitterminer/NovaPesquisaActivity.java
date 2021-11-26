@@ -49,12 +49,23 @@ public class NovaPesquisaActivity extends AppCompatActivity {
         palavrasChave = findViewById(R.id.editTextPalavrasChave);
         respostas = findViewById(R.id.editTextRespostas);
 
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_TITULO, tituloPesquisa.getText().toString());
-        intent.putExtra(EXTRA_DESCRICAO, descricaoPesquisa.getText().toString());
-        intent.putExtra(EXTRA_PALAVRAS_CHAVE, palavrasChave.getText().toString());
-        intent.putExtra(EXTRA_RESPOSTAS, respostas.getText().toString());
-        setResult(RESULT_OK, intent);
-        finish();
+        String titulo = tituloPesquisa.getText().toString().trim();
+        String palavras = palavrasChave.getText().toString().trim();
+        String resp = respostas.getText().toString().trim();
+
+        if (titulo.isEmpty() || palavras.isEmpty() || resp.isEmpty()) {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "Campos não preenchidos!",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_TITULO, tituloPesquisa.getText().toString());
+            intent.putExtra(EXTRA_DESCRICAO, descricaoPesquisa.getText().toString());
+            intent.putExtra(EXTRA_PALAVRAS_CHAVE, palavrasChave.getText().toString());
+            intent.putExtra(EXTRA_RESPOSTAS, respostas.getText().toString());
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 }
