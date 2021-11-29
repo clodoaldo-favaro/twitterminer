@@ -30,13 +30,11 @@
         <activity
             android:name=".ListagemPesquisasActivity"
             android:exported="true"
-            android:label="@string/title_activity_listagem_pesquisas"
-            android:theme="@style/Theme.TwitterMiner.NoActionBar" />
+            android:label="@string/title_activity_listagem_pesquisas" />
         <activity
             android:name=".ListagemTweetActivity"
             android:exported="true"
-            android:label="ListagemTweetActivity"
-            android:theme="@style/Theme.TwitterMiner.NoActionBar" />
+            android:label="ListagemTweetActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

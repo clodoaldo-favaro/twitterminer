@@ -1,10 +1,13 @@
 package com.example.twitterminer;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -48,6 +51,14 @@ public class ColetarTweetsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coletar_tweets);
+
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        actionBar.setTitle("Coletar tweets");
 
         mRepository = new AppRepository(this.getApplication());
         Button buttonParar = findViewById(R.id.buttonPararColeta);
@@ -157,19 +168,38 @@ public class ColetarTweetsActivity extends AppCompatActivity {
         buttonParar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                interruptSearch = true;
-                if (thread != null) {
-                    thread.interrupt();
-                }
-
-                pesquisaTela.dataUltimaConsulta = Calendar.getInstance().getTime();
-                pesquisaTela.idUltimoTweetConsultado = idUltimoTweet;
-                mRepository.updatePesquisa(pesquisaTela);
-
-                Intent intent = new Intent(ColetarTweetsActivity.this, PesquisaDetalheActivity.class);
-                intent.putExtra(PesquisaDetalheActivity.EXTRA_ID_PESQUISA, idPesquisa);
-                startActivity(intent);
+                interromperColeta();
             }
         });
+    }
+
+    public void interromperColeta() {
+        interruptSearch = true;
+        if (thread != null) {
+            thread.interrupt();
+        }
+
+        pesquisaTela.dataUltimaConsulta = Calendar.getInstance().getTime();
+        pesquisaTela.idUltimoTweetConsultado = idUltimoTweet;
+        mRepository.updatePesquisa(pesquisaTela);
+
+        Intent intent = new Intent(ColetarTweetsActivity.this, PesquisaDetalheActivity.class);
+        intent.putExtra(PesquisaDetalheActivity.EXTRA_ID_PESQUISA, idPesquisa);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        interromperColeta();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                interromperColeta();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

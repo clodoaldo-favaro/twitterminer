@@ -10,9 +10,12 @@ import com.example.twitterminer.viewmodel.PesquisaViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -56,6 +59,14 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
 
         novaPesquisaButton = findViewById(R.id.adicionarPesquisaFab);
         mRepository = new AppRepository(this.getApplication());
+
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        actionBar.setTitle("Pesquisas");
 
         novaPesquisaButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,5 +150,22 @@ public class ListagemPesquisasActivity extends AppCompatActivity implements Pesq
                 getApplicationContext(),
                 "Pesquisa excluída!",
                 Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, TelaInicialActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, TelaInicialActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
