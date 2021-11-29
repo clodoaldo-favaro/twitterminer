@@ -42,8 +42,8 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "app_database")
                             .addCallback(sCreateRoomDatabaseCallback)
-                            .addCallback(sOpenRoomDatabaseCallback)
                             .build();
+                    INSTANCE.query("select 1", null);
                 }
             }
         }
@@ -56,28 +56,6 @@ public abstract class AppDatabase extends RoomDatabase {
             super.onCreate(db);
 
             databaseWriteExecutor.execute(() -> {
-                UsuarioDao usuarioDao = INSTANCE.usuarioDao();
-
-                Usuario usuario = usuarioDao.findByLogin("teste");
-                if (usuario == null) {
-                    usuario = Usuario.getDefaultUser();
-                    usuarioDao.insert(usuario);
-                }
-            });
-        }
-    };
-
-    public static RoomDatabase.Callback sOpenRoomDatabaseCallback = new RoomDatabase.Callback() {
-        @Override
-        public void onOpen(@NonNull SupportSQLiteDatabase db) {
-            super.onOpen(db);
-
-            databaseWriteExecutor.execute(() -> {
-                /*ResultadoDao resultadoDao = INSTANCE.resultadoDao();
-                resultadoDao.deleteAll();
-                PesquisaDao pesquisaDao = INSTANCE.pesquisaDao();
-                pesquisaDao.resetIdUltimoTweet();*/
-
                 UsuarioDao usuarioDao = INSTANCE.usuarioDao();
 
                 Usuario usuario = usuarioDao.findByLogin("teste");
